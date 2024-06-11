@@ -14,7 +14,7 @@ public class Panel extends JPanel implements Runnable {
     static final int BALL_DIAM = 20;
 
     static final int WIDTH_PADDLE = 25;
-    static final int HEIGHT_PADDLE = 25;
+    static final int HEIGHT_PADDLE = 100;
 
     Thread gameThread;
     Image image;
@@ -38,7 +38,8 @@ public class Panel extends JPanel implements Runnable {
     }
 
     public void createBall(){
-
+     //   random = new Random();
+       ball = new Ball((WIDTH_GAME/2)-(BALL_DIAM/2),(HEIGHT_GAME/2)-(BALL_DIAM/2),BALL_DIAM,BALL_DIAM);
     }
     public void createPaddles(){
 
@@ -55,16 +56,86 @@ public class Panel extends JPanel implements Runnable {
 
     }
     public void draw(Graphics g){
-
+        paddle1.draw(g);
+        paddle2.draw(g);
+        ball.draw(g);
+        score.draw(g);
     }
 
     public void move(){
-
+        paddle1.move();
+        paddle2.move();
+        ball.move();
     }
 
     public void checkCollision(){
 
+        // Bounce the balls off window edges (Míček nemůže překročit na y-axis vrchní a spodní hranici.)
+
+        if (ball.y <= 0){
+            ball.setYDirection(-ball.yVelocityBall);
+        }
+        if (ball.y >= HEIGHT_GAME-BALL_DIAM){
+            ball.setYDirection(-ball.yVelocityBall);
+        }
+
+        // Bounces ball off paddles - (Při každém dotyku se znásobí rychlost)
+        // intersect je již v awt (díky bohu) - tedy rectangle ball intersectuje s rectangle paddle
+
+        if(ball.intersects(paddle1)) {
+            ball.xVelocityBall = Math.abs(ball.xVelocityBall);
+            ball.xVelocityBall++;
+            if (ball.yVelocityBall>0)
+                ball.yVelocityBall++;
+            else{
+                ball.yVelocityBall--;
+            }
+            ball.setXDirection(ball.xVelocityBall);
+            ball.setYDirection(ball.yVelocityBall);
+        }
+        if(ball.intersects(paddle2)) {
+            ball.xVelocityBall = Math.abs(ball.xVelocityBall);
+            ball.xVelocityBall++;
+            if (ball.yVelocityBall>0)
+                ball.yVelocityBall++;
+            else{
+                ball.yVelocityBall--;
+            }
+            ball.setXDirection(-ball.xVelocityBall);
+            ball.setYDirection(-ball.yVelocityBall);
+        }
+
+        // Stops paddles at window edges. - (Bez následujících if statements by míček proletěl skrz paddles.)
+        if(paddle1.y<=0){
+            paddle1.y=0;
+        }
+        if(paddle1.y>= (HEIGHT_GAME-HEIGHT_PADDLE)){
+            paddle1.y= HEIGHT_GAME-HEIGHT_PADDLE;
+        }
+        if(paddle2.y<=0){
+            paddle2.y=0;
+        }
+        if(paddle2.y>= (HEIGHT_GAME-HEIGHT_PADDLE)){
+            paddle2.y= HEIGHT_GAME-HEIGHT_PADDLE;
+        }
+
+        //Give players a point and create new paddles with ball - (Při každém připočtení skóre se vytvoří nové
+        // paddles a míček - tedy jede se dál)
+        if(ball.x<=0){
+            score.player2Score++;
+            createPaddles();
+            createBall();
+            System.out.println("player2: "+score.player2Score);
+        }
+        if(ball.x>= WIDTH_GAME-BALL_DIAM){
+            score.player1Score++;
+            createPaddles();
+            createBall();
+            System.out.println("player1: "+score.player1Score);
+        }
     }
+
+    // 60 fps - převzato z minecraftu + tutoriálů (v rámci možností)
     public void run(){
         long lastTime = System.nanoTime();
         double ticksAmount = 60.0;
@@ -87,8 +158,13 @@ public class Panel extends JPanel implements Runnable {
     public class ActionListener extends KeyAdapter{
         public void keyPressed(KeyEvent e){
 
+            paddle1.keyPressed(e);
+            paddle2.keyPressed(e);
+
         }
         public void keyReleased(KeyEvent e){
+            paddle1.keyReleased(e);
+            paddle2.keyReleased(e);
 
         }
     }
