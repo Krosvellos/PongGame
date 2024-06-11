@@ -5,6 +5,11 @@ import javax.swing.*;
 
 public class Ball extends Rectangle {
 
+
+    Random random;
+    int xVelocityBall;
+    int yVelocityBall;
+
     Ball(){
 
     }
