@@ -14,6 +14,8 @@ public class Ball extends Rectangle {
     Ball(int x, int y, int width, int height){
         super(x,y,width,height);
         random = new Random();
+
+        // ball direction at spawn
         int randXDirection = random.nextInt(2);
         if (randXDirection == 0) {
             randXDirection--;

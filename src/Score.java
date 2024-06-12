@@ -19,7 +19,7 @@ public void draw(Graphics g){
         g.setFont(new Font("IMPACT",Font.PLAIN, 55));
         g.drawString(String.valueOf(player1Score/10)+String.valueOf(player1Score%10), (WIDTH_GAME/2)-85, 52);
         g.drawString(String.valueOf(player2Score/10)+String.valueOf(player2Score%10), (WIDTH_GAME/2)+28, 52);
-        g.drawString("JAVA| |PONG",(WIDTH_GAME/2)-122,550);
+        g.drawString("JAVA| |PONG",(WIDTH_GAME/2)-122,550); // Ať to dole není tak nudný
         g.drawLine(WIDTH_GAME/2,0,WIDTH_GAME/2,HEIGHT_GAME);
 }
 

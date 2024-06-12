@@ -7,7 +7,7 @@ public class Paddle extends Rectangle {
 
     int id;
     int yVelocityPad;
-    int speed = 7;
+    int speed = 7; // Lze zvednout na deset a stále to bude hratelné, ale osobně mi sedm přijde dostačující
 
     Paddle(int x, int y, int WIDTH_PADDLE, int HEIGHT_PADDLE, int id) {
         super(x, y, WIDTH_PADDLE, HEIGHT_PADDLE);
@@ -39,8 +39,10 @@ public class Paddle extends Rectangle {
         }
     }
 
+
     public void keyReleased(KeyEvent e) {
 
+        // switch pro pohyb paddles : case se mění podle id hráce, paddles tak mění pozici po y axis
         switch(id){
             case 1:
                 if(e.getKeyCode()==KeyEvent.VK_W){

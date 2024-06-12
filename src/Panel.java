@@ -5,16 +5,20 @@ import javax.swing.*;
 
 public class Panel extends JPanel implements Runnable {
 
+    // Velikost panelu (Height_Game by mělé odpovídat reálnému pong stolu - proto ten násobek :D)
 
     static final int WIDTH_GAME = 1000;
     static final int HEIGHT_GAME = (int)(WIDTH_GAME * (0.55555));
 
     static final Dimension SCREEN_SIZE = new Dimension(WIDTH_GAME, HEIGHT_GAME);
 
+
+    //Hodnoty pro ball a paddle kontruktory ---
     static final int BALL_DIAM = 20;
 
     static final int WIDTH_PADDLE = 25;
     static final int HEIGHT_PADDLE = 100;
+    // ---
 
     Thread gameThread;
     Image image;
@@ -30,7 +34,7 @@ public class Panel extends JPanel implements Runnable {
         createBall();
         score = new Score(WIDTH_GAME,HEIGHT_GAME);
         this.setFocusable(true);
-        this.addKeyListener(new ActionListener());
+        this.addKeyListener(new ActListener());
         this.setPreferredSize(SCREEN_SIZE);
 
         gameThread = new Thread(this);
@@ -155,7 +159,7 @@ public class Panel extends JPanel implements Runnable {
         }
     }
 
-    public class ActionListener extends KeyAdapter{
+    public class ActListener extends KeyAdapter{
         public void keyPressed(KeyEvent e){
 
             paddle1.keyPressed(e);
